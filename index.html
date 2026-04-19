@@ -4,219 +4,425 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Astro & Homeo Wellness – Dr. Viraja Kumar</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
+/* ══════════════════════════════════════
+   DARK MODE  ·  Gold & Black  (default)
+   ══════════════════════════════════════ */
 :root{
   --gold:#d4a843;
   --gold-light:#f0c96a;
   --gold-dark:#a07830;
-  --black:#0a0a0a;
-  --deep:#111218;
-  --card:#16181f;
-  --border:rgba(212,168,67,0.25);
+  --gold-glow:rgba(212,168,67,0.35);
+  /* surfaces */
+  --bg:#060608;
+  --bg-deep:#0d0e14;
+  --bg-alt:rgba(13,14,20,0.75);
+  --bg-alt2:rgba(13,14,20,0.85);
+  /* glass cards */
+  --glass:rgba(255,255,255,0.04);
+  --glass-border:rgba(255,255,255,0.09);
+  /* nav */
+  --nav-bg:rgba(6,6,8,0.82);
+  /* modals */
+  --modal-bg:rgba(8,9,14,0.97);
+  /* card border accent */
+  --card-border:rgba(212,168,67,0.18);
+  /* typography */
   --text:#e8d9b8;
-  --muted:#8a7d65;
-  --white:#fdf8ee;
+  --text-heading:#fdf8ee;
+  --muted:#7a6e5a;
+  /* forms */
+  --input-bg:rgba(255,255,255,0.04);
+  --input-border:rgba(212,168,67,0.18);
+  --input-focus-bg:rgba(212,168,67,0.05);
+  --select-option-bg:#0d0e14;
+  /* star canvas */
+  --star-alpha:0.7;
+  --star-color:253,248,238;
+  /* why section overlay */
+  --why-bg:linear-gradient(to bottom,rgba(18,20,28,0.65),rgba(6,6,8,0.45));
+  /* footer */
+  --footer-bg:#060608;
+  /* shop img bg */
+  --shop-img-bg:linear-gradient(135deg,rgba(18,18,30,0.95),rgba(26,35,22,0.95));
+  --shop-img-overlay:rgba(6,6,8,0.5);
+  /* about frame inner ring fill */
+  --ring-fill:#060608;
+  /* upi box */
+  --upi-bg:rgba(212,168,67,0.07);
+  /* toggle btn */
+  --toggle-bg:rgba(212,168,67,0.1);
+  --toggle-icon:'☀';
+  --toggle-label:'Light Mode';
+}
+
+/* ══════════════════════════════════════
+   LIGHT MODE  ·  Gold & White
+   ══════════════════════════════════════ */
+@media (prefers-color-scheme:light){
+  :root{
+    /* surfaces */
+    --bg:#fdf8ee;
+    --bg-deep:#f5edda;
+    --bg-alt:rgba(245,237,218,0.8);
+    --bg-alt2:rgba(238,228,205,0.9);
+    /* glass cards */
+    --glass:rgba(255,255,255,0.7);
+    --glass-border:rgba(160,120,48,0.18);
+    /* nav */
+    --nav-bg:rgba(253,248,238,0.88);
+    /* modals */
+    --modal-bg:rgba(253,248,238,0.98);
+    /* card border accent */
+    --card-border:rgba(160,120,48,0.22);
+    /* typography */
+    --text:#3d2e10;
+    --text-heading:#1a1208;
+    --muted:#8a7040;
+    /* forms */
+    --input-bg:rgba(255,255,255,0.8);
+    --input-border:rgba(160,120,48,0.3);
+    --input-focus-bg:rgba(212,168,67,0.06);
+    --select-option-bg:#fdf8ee;
+    /* star canvas — warmer, subtler in light */
+    --star-alpha:0.18;
+    --star-color:120,80,10;
+    /* why section */
+    --why-bg:linear-gradient(to bottom,rgba(245,237,218,0.7),rgba(238,228,205,0.5));
+    /* footer */
+    --footer-bg:#f0e5cc;
+    /* shop img bg */
+    --shop-img-bg:linear-gradient(135deg,rgba(240,230,205,0.95),rgba(230,220,190,0.95));
+    --shop-img-overlay:rgba(253,248,238,0.2);
+    /* about frame fill */
+    --ring-fill:#fdf8ee;
+    /* upi box */
+    --upi-bg:rgba(212,168,67,0.1);
+    /* toggle btn */
+    --toggle-bg:rgba(160,120,48,0.1);
+    --toggle-icon:'☾';
+    --toggle-label:'Dark Mode';
+  }
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Jost',sans-serif;background:var(--black);color:var(--text);overflow-x:hidden;}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background 0.4s,color 0.35s;}
 a{text-decoration:none;color:inherit;}
 
 /* SCROLLBAR */
-::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-track{background:var(--black);}
-::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:3px;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:linear-gradient(to bottom,var(--gold-dark),var(--gold));border-radius:2px;}
 
-/* NAV */
-nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(10,10,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:70px;}
+/* THEME TOGGLE */
+.theme-toggle{position:fixed;bottom:90px;right:24px;z-index:999;width:52px;height:52px;border-radius:50%;background:var(--glass);border:1px solid var(--card-border);backdrop-filter:blur(14px);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all 0.25s;box-shadow:0 2px 16px rgba(0,0,0,0.2);}
+.theme-toggle:hover{border-color:var(--gold);box-shadow:0 0 22px var(--gold-glow);transform:scale(1.1);}
+.theme-toggle-icon{font-size:1.25rem;line-height:1;}
+.theme-toggle-txt{font-size:0.38rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);opacity:0.7;}
+/* JS-forced dark override */
+body.force-dark{--bg:#060608;--bg-deep:#0d0e14;--bg-alt:rgba(13,14,20,0.75);--bg-alt2:rgba(13,14,20,0.85);--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.09);--nav-bg:rgba(6,6,8,0.82);--modal-bg:rgba(8,9,14,0.97);--card-border:rgba(212,168,67,0.18);--text:#e8d9b8;--text-heading:#fdf8ee;--muted:#7a6e5a;--input-bg:rgba(255,255,255,0.04);--input-border:rgba(212,168,67,0.18);--input-focus-bg:rgba(212,168,67,0.05);--select-option-bg:#0d0e14;--star-alpha:0.7;--star-color:253,248,238;--why-bg:linear-gradient(to bottom,rgba(18,20,28,0.65),rgba(6,6,8,0.45));--footer-bg:#060608;--shop-img-bg:linear-gradient(135deg,rgba(18,18,30,0.95),rgba(26,35,22,0.95));--shop-img-overlay:rgba(6,6,8,0.5);--ring-fill:#060608;--upi-bg:rgba(212,168,67,0.07);--section-alt:rgba(13,14,20,0.7);--section-alt2:rgba(13,14,20,0.8);}
+/* JS-forced light override */
+body.force-light{--bg:#fdf8ee;--bg-deep:#f5edda;--bg-alt:rgba(245,237,218,0.8);--bg-alt2:rgba(238,228,205,0.9);--glass:rgba(255,255,255,0.72);--glass-border:rgba(160,120,48,0.2);--nav-bg:rgba(253,248,238,0.9);--modal-bg:rgba(253,248,238,0.98);--card-border:rgba(160,120,48,0.22);--text:#3d2e10;--text-heading:#1a1208;--muted:#8a7040;--input-bg:rgba(255,255,255,0.85);--input-border:rgba(160,120,48,0.3);--input-focus-bg:rgba(212,168,67,0.06);--select-option-bg:#fdf8ee;--star-alpha:0.18;--star-color:120,80,10;--why-bg:linear-gradient(to bottom,rgba(245,237,218,0.75),rgba(238,228,205,0.55));--footer-bg:#f0e5cc;--shop-img-bg:linear-gradient(135deg,rgba(240,230,205,0.95),rgba(230,220,190,0.95));--shop-img-overlay:rgba(253,248,238,0.2);--ring-fill:#fdf8ee;--upi-bg:rgba(212,168,67,0.1);--section-alt:rgba(245,237,218,0.7);--section-alt2:rgba(238,228,205,0.8);}
+
+/* ─── STAR CANVAS ─── */
+#star-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:1;}
+
+/* ─── ZODIAC RING ─── */
+.zodiac-ring{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(100vw,100vh);height:min(100vw,100vh);pointer-events:none;z-index:0;opacity:0.035;animation:slowSpin 120s linear infinite;}
+@keyframes slowSpin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;width:100%;z-index:1000;background:var(--nav-bg);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid var(--card-border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:68px;transition:background 0.3s;}
 .nav-brand{display:flex;align-items:center;gap:12px;}
-.nav-logo-img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid var(--gold);}
-.nav-brand-text{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--gold);letter-spacing:0.04em;}
+.nav-logo-img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:1.5px solid var(--gold);box-shadow:0 0 14px var(--gold-glow);}
+.nav-brand-text{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold);letter-spacing:0.05em;}
 .nav-links{display:flex;gap:2rem;align-items:center;}
-.nav-links a{font-size:0.82rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a{font-size:0.78rem;color:var(--muted);letter-spacing:0.14em;text-transform:uppercase;transition:color 0.25s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.25s;}
 .nav-links a:hover{color:var(--gold);}
-.nav-book{background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;padding:8px 20px;border-radius:2px;cursor:pointer;transition:all 0.2s;}
-.nav-book:hover{background:var(--gold);color:var(--black);}
+.nav-links a:hover::after{width:100%;}
+.nav-book{background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Jost',sans-serif;font-size:0.76rem;letter-spacing:0.14em;text-transform:uppercase;padding:8px 22px;border-radius:2px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+.nav-book::before{content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.25s;z-index:-1;}
+.nav-book:hover{color:var(--bg);}
+.nav-book:hover::before{transform:scaleX(1);}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:6rem 2rem 3rem;position:relative;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212,168,67,0.07) 0%, transparent 70%);pointer-events:none;}
-.hero-lines{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(212,168,67,0.04) 79px,rgba(212,168,67,0.04) 80px),repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(212,168,67,0.04) 79px,rgba(212,168,67,0.04) 80px);pointer-events:none;}
-.hero-logo{width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);box-shadow:0 0 40px rgba(212,168,67,0.2);margin-bottom:2rem;}
-.hero-eyebrow{font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-weight:400;}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,5rem);line-height:1.1;color:var(--white);margin-bottom:0.5rem;}
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8rem 2rem 4rem;position:relative;z-index:1;}
+.hero-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(ellipse,rgba(212,168,67,0.08) 0%,transparent 65%);pointer-events:none;animation:pulse 6s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}}
+.hero-logo-wrap{position:relative;margin-bottom:2.5rem;}
+.hero-logo-ring{position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(212,168,67,0.25);animation:rotatering 20s linear infinite;}
+.hero-logo-ring2{position:absolute;inset:-22px;border-radius:50%;border:1px solid rgba(212,168,67,0.1);animation:rotatering 30s linear infinite reverse;}
+@keyframes rotatering{to{transform:rotate(360deg);}}
+.hero-logo{width:118px;height:118px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);box-shadow:0 0 0 6px rgba(212,168,67,0.08),0 0 60px rgba(212,168,67,0.25);display:block;}
+.hero-eyebrow{font-size:0.68rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;opacity:0.85;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,6vw,5.2rem);line-height:1.08;color:var(--text-heading);margin-bottom:0.6rem;text-shadow:0 0 80px rgba(212,168,67,0.1);}
 .hero h1 em{color:var(--gold);font-style:italic;}
-.hero-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold-light);letter-spacing:0.1em;margin:1rem 0;}
-.hero-tagline{font-size:0.95rem;color:var(--muted);max-width:540px;line-height:1.8;margin:0 auto 2rem;}
-.hero-badges{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;}
-.hbadge{border:1px solid var(--border);color:var(--muted);font-size:0.75rem;padding:5px 14px;border-radius:1px;letter-spacing:0.08em;}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--gold-light);letter-spacing:0.12em;margin:1.2rem 0 0.5rem;}
+.hero-tagline{font-size:0.92rem;color:var(--muted);max-width:560px;line-height:1.9;margin:0 auto 2.5rem;}
+.hero-badges{display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.8rem;}
+.hbadge{background:rgba(212,168,67,0.07);border:1px solid rgba(212,168,67,0.2);color:rgba(212,168,67,0.7);font-size:0.72rem;padding:5px 14px;border-radius:2px;letter-spacing:0.1em;backdrop-filter:blur(8px);transition:all 0.25s;}
+.hbadge:hover{background:rgba(212,168,67,0.14);color:var(--gold);}
 .hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-.btn-primary{background:var(--gold);color:var(--black);font-family:'Jost',sans-serif;font-size:0.82rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:13px 32px;border:none;border-radius:2px;cursor:pointer;transition:all 0.2s;}
-.btn-primary:hover{background:var(--gold-light);}
-.btn-secondary{background:transparent;color:var(--gold);border:1px solid var(--gold);font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.15em;text-transform:uppercase;padding:12px 32px;border-radius:2px;cursor:pointer;transition:all 0.2s;}
-.btn-secondary:hover{background:rgba(212,168,67,0.1);}
-.hero-contact{margin-top:2rem;font-size:0.85rem;color:var(--muted);}
-.hero-contact a{color:var(--gold);margin:0 0.6rem;}
 
-/* SECTIONS */
-.section{padding:6rem 2rem;}
+/* ─── BUTTONS ─── */
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--bg);font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;padding:14px 36px;border:none;border-radius:2px;cursor:pointer;transition:all 0.25s;box-shadow:0 0 30px rgba(212,168,67,0.3),inset 0 1px 0 rgba(255,255,255,0.2);position:relative;overflow:hidden;}
+.btn-primary::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--rx,50%) var(--ry,50%),rgba(255,255,255,0.3),transparent 70%);opacity:0;transition:opacity 0.3s;}
+.btn-primary:hover{box-shadow:0 0 50px rgba(212,168,67,0.5),inset 0 1px 0 rgba(255,255,255,0.2);transform:translateY(-2px);}
+.btn-primary:hover::after{opacity:1;}
+.btn-primary:active{transform:translateY(0) scale(0.98);}
+.btn-secondary{background:transparent;color:var(--gold);border:1px solid rgba(212,168,67,0.5);font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.18em;text-transform:uppercase;padding:13px 36px;border-radius:2px;cursor:pointer;transition:all 0.25s;backdrop-filter:blur(8px);}
+.btn-secondary:hover{background:rgba(212,168,67,0.08);border-color:var(--gold);box-shadow:0 0 25px rgba(212,168,67,0.15);transform:translateY(-2px);}
+.btn-secondary:active{transform:translateY(0) scale(0.98);}
+.hero-contact{margin-top:2.2rem;font-size:0.83rem;color:var(--muted);}
+.hero-contact a{color:var(--gold-light);margin:0 0.5rem;transition:color 0.2s;}
+.hero-contact a:hover{color:var(--gold);}
+
+/* ─── SCROLL HINT ─── */
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0.4;}
+.scroll-hint span{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);}
+.scroll-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:scrollbounce 1.8s ease-in-out infinite;}
+@keyframes scrollbounce{0%,100%{transform:translateY(0);opacity:1;}50%{transform:translateY(8px);opacity:0.3;}}
+
+/* ─── SECTIONS ─── */
+.section{padding:7rem 2rem;position:relative;z-index:1;}
 .section-inner{max-width:1100px;margin:0 auto;}
-.section-eyebrow{font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;text-align:center;}
-.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--white);text-align:center;margin-bottom:0.5rem;}
-.section-sub{text-align:center;font-size:0.9rem;color:var(--muted);max-width:560px;margin:0 auto 3.5rem;line-height:1.8;}
-.divider{width:60px;height:1px;background:var(--gold);margin:0 auto 2rem;}
+.section-eyebrow{font-size:0.67rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;text-align:center;opacity:0.85;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4vw,2.9rem);color:var(--text-heading);text-align:center;margin-bottom:0.6rem;}
+.section-sub{text-align:center;font-size:0.9rem;color:var(--muted);max-width:560px;margin:0 auto 3.5rem;line-height:1.85;}
+.divider{width:50px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:0 auto 2.5rem;}
 
-/* ABOUT */
+/* ─── ABOUT ─── */
 .about-wrap{display:flex;gap:4rem;align-items:center;flex-wrap:wrap;}
-.about-avatar{flex-shrink:0;width:200px;height:200px;border-radius:50%;background:linear-gradient(135deg,#1a1a2e,#2d4a2d);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);margin:0 auto;}
-.about-text h3{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--white);margin-bottom:0.3rem;}
-.about-role{color:var(--gold);font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1.2rem;}
-.about-text p{color:var(--muted);line-height:1.9;font-size:0.92rem;}
-.about-stats{display:flex;gap:2.5rem;margin-top:2rem;flex-wrap:wrap;}
-.stat-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);}
-.stat-lbl{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:2px;}
-
-/* ADMIN CREDIT */
-.admin-bar{background:rgba(212,168,67,0.06);border:1px solid var(--border);border-radius:4px;padding:1rem 1.5rem;margin-top:2rem;display:flex;align-items:center;gap:1rem;}
-.admin-bar span{font-size:0.78rem;color:var(--muted);letter-spacing:0.06em;}
+.about-img-frame{flex-shrink:0;position:relative;}
+.about-img-frame::before{content:'';position:absolute;inset:-2px;border-radius:50%;background:conic-gradient(var(--gold),var(--gold-dark),var(--gold));animation:rotatering 8s linear infinite;z-index:0;}
+.about-img-frame::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--ring-fill);z-index:1;}
+.about-avatar-img{position:relative;z-index:2;width:200px;height:200px;border-radius:50%;object-fit:cover;display:block;}
+.about-avatar-fallback{position:relative;z-index:2;width:200px;height:200px;border-radius:50%;background:linear-gradient(135deg,#1a1a2e,#2a3a1a);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);}
+.about-text h3{font-family:'Playfair Display',serif;font-size:2rem;color:var(--text-heading);margin-bottom:0.3rem;}
+.about-role{color:var(--gold);font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:1.4rem;opacity:0.8;}
+.about-text p{color:var(--muted);line-height:1.95;font-size:0.91rem;margin-bottom:0.8rem;}
+.about-stats{display:flex;gap:2.5rem;margin-top:2.2rem;flex-wrap:wrap;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--gold);text-shadow:0 0 20px var(--gold-glow);}
+.stat-lbl{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.admin-bar{background:rgba(212,168,67,0.05);border:1px solid var(--card-border);border-radius:4px;padding:0.9rem 1.4rem;margin-top:2rem;display:flex;align-items:center;gap:1rem;backdrop-filter:blur(8px);}
+.admin-bar span{font-size:0.76rem;color:var(--muted);letter-spacing:0.05em;}
 .admin-bar strong{color:var(--gold);}
 
-/* TABS */
-.tabs-nav{display:flex;justify-content:center;gap:0;margin-bottom:3rem;border-bottom:1px solid var(--border);}
-.tab-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.15em;text-transform:uppercase;padding:12px 28px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;}
-.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
-.tab-pane{display:none;}.tab-pane.active{display:block;}
+/* ─── GLASS CARDS ─── */
+.card{background:var(--glass);border:1px solid var(--glass-border);border-radius:6px;padding:2rem;transition:all 0.3s;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;inset:0;border-radius:6px;background:radial-gradient(ellipse at top left,rgba(212,168,67,0.05),transparent 60%);pointer-events:none;opacity:0;transition:opacity 0.3s;}
+.card:hover{border-color:rgba(212,168,67,0.35);transform:translateY(-4px);box-shadow:0 8px 40px rgba(0,0,0,0.4),0 0 30px rgba(212,168,67,0.08);}
+.card:hover::before{opacity:1;}
+.card-icon{font-size:1.8rem;margin-bottom:1.1rem;display:inline-block;}
+.card h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--text-heading);margin-bottom:0.5rem;}
+.card p{font-size:0.84rem;color:var(--muted);line-height:1.75;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.4rem;}
 
-/* CARDS */
-.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
-.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:2rem;transition:border-color 0.2s,transform 0.2s;}
-.card:hover{border-color:var(--gold);transform:translateY(-3px);}
-.card-icon{font-size:2rem;margin-bottom:1rem;}
-.card h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--white);margin-bottom:0.5rem;}
-.card p{font-size:0.85rem;color:var(--muted);line-height:1.7;}
+/* ─── TABS ─── */
+.tabs-nav{display:flex;justify-content:center;gap:0;margin-bottom:3rem;border-bottom:1px solid rgba(212,168,67,0.12);}
+.tab-btn{background:none;border:none;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.16em;text-transform:uppercase;padding:12px 30px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.25s;}
+.tab-btn.active,.tab-btn:hover{color:var(--gold);}
+.tab-btn.active{border-bottom-color:var(--gold);}
+.tab-pane{display:none;animation:fadeIn 0.35s ease;}
+.tab-pane.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-/* MEDICINE TABLE */
-.med-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.75rem;}
-.med-row{display:flex;gap:1rem;padding:0.75rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.1);border-radius:3px;}
-.med-name{font-size:0.82rem;font-weight:500;color:var(--gold);min-width:140px;flex-shrink:0;}
-.med-use{font-size:0.78rem;color:var(--muted);line-height:1.5;}
-.disease-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:2rem;}
-.dis-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.2rem;}
-.dis-card h4{font-size:0.82rem;font-weight:500;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.75rem;}
-.dis-card ul{list-style:none;}
-.dis-card ul li{font-size:0.82rem;color:var(--muted);padding:2px 0;line-height:1.6;}
-.dis-card ul li::before{content:'— ';color:var(--gold-dark);}
-
-/* WHY */
-.why-section{background:var(--deep);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;max-width:900px;margin:0 auto;}
+/* ─── WHY ─── */
+.section-alt-bg{background:var(--bg-alt);border-top:1px solid var(--card-border);}
+.section-alt2-bg{background:var(--bg-alt2);border-top:1px solid var(--card-border);}
+.why-section{background:var(--why-bg);border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2.5rem;max-width:900px;margin:0 auto;}
 .why-item{text-align:center;}
-.why-icon{font-size:2rem;margin-bottom:0.75rem;}
-.why-item h4{font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:0.4rem;font-size:1rem;}
-.why-item p{font-size:0.82rem;color:var(--muted);line-height:1.7;}
+.why-icon{font-size:2.2rem;margin-bottom:1rem;display:block;}
+.why-item h4{font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:0.5rem;font-size:1.05rem;}
+.why-item p{font-size:0.83rem;color:var(--muted);line-height:1.75;}
 
-/* BOOKING */
-.booking-section{background:var(--deep);border-top:1px solid var(--border);}
-.booking-inner{max-width:780px;margin:0 auto;}
+/* ─── MEDICINES ─── */
+.med-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:0.7rem;}
+.med-row{display:flex;gap:1rem;padding:0.85rem 1.1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:4px;backdrop-filter:blur(8px);transition:all 0.2s;}
+.med-row:hover{border-color:rgba(212,168,67,0.25);background:rgba(212,168,67,0.04);}
+.med-name{font-size:0.81rem;font-weight:500;color:var(--gold);min-width:145px;flex-shrink:0;}
+.med-use{font-size:0.78rem;color:var(--muted);line-height:1.55;}
+.disease-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1rem;margin-top:2.5rem;}
+.dis-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:5px;padding:1.3rem;backdrop-filter:blur(12px);transition:all 0.25s;}
+.dis-card:hover{border-color:rgba(212,168,67,0.25);}
+.dis-card h4{font-size:0.75rem;font-weight:600;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.8rem;}
+.dis-card ul{list-style:none;}
+.dis-card ul li{font-size:0.8rem;color:var(--muted);padding:2px 0;line-height:1.65;}
+.dis-card ul li::before{content:'– ';color:rgba(212,168,67,0.4);}
+
+/* ─── SHOP ─── */
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1.5rem;}
+.shop-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:6px;overflow:hidden;backdrop-filter:blur(16px);transition:all 0.3s;}
+.shop-card:hover{border-color:rgba(212,168,67,0.35);transform:translateY(-5px);box-shadow:0 12px 50px rgba(0,0,0,0.5),0 0 35px rgba(212,168,67,0.08);}
+.shop-img-wrap{width:100%;height:165px;background:var(--shop-img-bg);display:flex;align-items:center;justify-content:center;font-size:3.5rem;border-bottom:1px solid var(--glass-border);position:relative;overflow:hidden;}
+.shop-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.shop-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,var(--shop-img-overlay));}
+.shop-body{padding:1.4rem;}
+.shop-body h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--text-heading);margin-bottom:0.4rem;}
+.shop-body p{font-size:0.82rem;color:var(--muted);line-height:1.65;margin-bottom:1rem;}
+.shop-price{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--gold);margin-bottom:0.8rem;text-shadow:0 0 15px var(--gold-glow);}
+.shop-btn{width:100%;background:transparent;border:1px solid rgba(212,168,67,0.4);color:var(--gold);font-family:'Jost',sans-serif;font-size:0.76rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px;border-radius:3px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+.shop-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold),var(--gold-dark));transform:scaleX(0);transform-origin:left;transition:transform 0.25s;z-index:0;}
+.shop-btn span{position:relative;z-index:1;}
+.shop-btn:hover{color:var(--bg);border-color:var(--gold);}
+.shop-btn:hover::before{transform:scaleX(1);}
+
+/* ─── TESTIMONIALS ─── */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto;}
+.testi-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:6px;padding:2rem;backdrop-filter:blur(14px);transition:all 0.3s;position:relative;overflow:hidden;}
+.testi-card::before{content:'\201C';position:absolute;top:-10px;left:1rem;font-family:'Playfair Display',serif;font-size:8rem;color:rgba(212,168,67,0.06);line-height:1;pointer-events:none;}
+.testi-card:hover{border-color:rgba(212,168,67,0.3);transform:translateY(-3px);}
+.stars{color:var(--gold);font-size:0.85rem;margin-bottom:0.9rem;letter-spacing:3px;text-shadow:0 0 8px var(--gold-glow);}
+.testi-card p{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--text);line-height:1.85;font-style:italic;margin-bottom:1.2rem;}
+.testi-author{font-size:0.75rem;color:rgba(212,168,67,0.6);letter-spacing:0.1em;text-transform:uppercase;}
+
+/* ─── CONTACT ─── */
+.contact-section{border-top:1px solid var(--card-border);}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.5rem;max-width:900px;margin:0 auto;}
+.contact-card{text-align:center;background:var(--glass);border:1px solid var(--glass-border);border-radius:6px;padding:1.8rem 1.2rem;backdrop-filter:blur(12px);transition:all 0.25s;}
+.contact-card:hover{border-color:rgba(212,168,67,0.3);transform:translateY(-3px);}
+.contact-icon{font-size:1.6rem;margin-bottom:0.6rem;display:block;}
+.contact-card h4{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;opacity:0.85;}
+.contact-card p,.contact-card a{font-size:0.86rem;color:var(--muted);line-height:1.8;}
+.contact-card a{color:rgba(212,168,67,0.7);transition:color 0.2s;}
+.contact-card a:hover{color:var(--gold);}
+
+/* ─── BOOKING MODAL ─── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:3000;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);}
+.modal-box{position:relative;z-index:1;background:var(--modal-bg);border:1px solid var(--card-border);border-radius:10px;padding:2.8rem 2.5rem;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;box-shadow:0 0 80px rgba(0,0,0,0.8),0 0 40px rgba(212,168,67,0.06);animation:modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes modalIn{from{opacity:0;transform:scale(0.92) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.modal-close{position:absolute;top:1.2rem;right:1.4rem;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);color:var(--muted);font-size:1.1rem;cursor:pointer;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.2s;line-height:1;}
+.modal-close:hover{color:var(--gold);border-color:rgba(212,168,67,0.4);background:rgba(212,168,67,0.08);}
+.modal-eyebrow{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;opacity:0.8;}
+.modal-box h2{font-family:'Playfair Display',serif;color:var(--text-heading);margin-bottom:0.3rem;font-size:1.8rem;}
+.modal-sub{font-size:0.84rem;color:var(--muted);margin-bottom:2rem;line-height:1.7;}
+.modal-divider{width:40px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin-bottom:2rem;}
+
+/* ─── ORDER MODAL ─── */
+.order-overlay{display:none;position:fixed;inset:0;z-index:3000;align-items:center;justify-content:center;padding:1rem;}
+.order-overlay.open{display:flex;}
+.upi-box{background:var(--upi-bg);border:1px solid rgba(212,168,67,0.18);border-radius:6px;padding:1.4rem;margin:1.4rem 0;text-align:center;}
+.upi-id{font-family:'Jost',sans-serif;font-size:1.15rem;font-weight:500;color:var(--gold);letter-spacing:0.06em;margin:0.5rem 0;text-shadow:0 0 15px var(--gold-glow);}
+.upi-note{font-size:0.76rem;color:var(--muted);line-height:1.6;}
+
+/* ─── FORMS ─── */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
 .fg{display:flex;flex-direction:column;gap:6px;}
 .fg.full{grid-column:1/-1;}
-label{font-size:0.75rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;}
-input,select,textarea{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:3px;padding:11px 14px;font-family:'Jost',sans-serif;font-size:0.9rem;color:var(--white);outline:none;width:100%;}
-input:focus,select:focus,textarea:focus{border-color:var(--gold);}
-select option{background:var(--deep);color:var(--white);}
+label{font-size:0.71rem;color:var(--muted);letter-spacing:0.14em;text-transform:uppercase;}
+input,select,textarea{background:var(--input-bg);border:1px solid var(--input-border);border-radius:4px;padding:11px 14px;font-family:'Jost',sans-serif;font-size:0.88rem;color:var(--text);outline:none;width:100%;transition:all 0.2s;}
+input:focus,select:focus,textarea:focus{border-color:rgba(212,168,67,0.55);background:var(--input-focus-bg);box-shadow:0 0 0 3px rgba(212,168,67,0.07);}
+select option{background:var(--select-option-bg);color:var(--text);}
 textarea{resize:vertical;min-height:100px;}
-.form-submit{width:100%;background:var(--gold);color:var(--black);border:none;padding:14px;font-family:'Jost',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:1.2rem;transition:background 0.2s;}
-.form-submit:hover{background:var(--gold-light);}
-.success-box{display:none;background:rgba(45,180,100,0.1);border:1px solid rgba(45,180,100,0.3);border-radius:4px;padding:1.2rem;margin-top:1rem;text-align:center;font-size:0.9rem;color:#6ecf8e;}
+.form-submit{width:100%;background:linear-gradient(135deg,var(--gold),#b8902e);color:var(--bg);border:none;padding:15px;font-family:'Jost',sans-serif;font-size:0.83rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;border-radius:3px;margin-top:1.2rem;transition:all 0.25s;box-shadow:0 0 30px rgba(212,168,67,0.25);position:relative;overflow:hidden;}
+.form-submit:hover{box-shadow:0 0 50px rgba(212,168,67,0.45);transform:translateY(-2px);}
+.form-submit:active{transform:scale(0.99);}
+.success-box{display:none;background:rgba(45,180,100,0.09);border:1px solid rgba(45,180,100,0.25);border-radius:5px;padding:1.2rem;margin-top:1rem;text-align:center;font-size:0.88rem;color:#7edea0;line-height:1.7;}
 
-/* SHOP */
-.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;}
-.shop-card{background:var(--card);border:1px solid var(--border);border-radius:4px;overflow:hidden;transition:border-color 0.2s;}
-.shop-card:hover{border-color:var(--gold);}
-.shop-img{width:100%;height:160px;object-fit:cover;(135deg,#1a1a2e,#2d3a1a);display:flex;align-items:center;justify-content:center;}
-.shop-body{padding:1.2rem;}
-.shop-body h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--white);margin-bottom:0.4rem;}
-.shop-body p{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
-.shop-price{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold);margin-bottom:0.75rem;}
-.shop-btn{width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;padding:9px;border-radius:2px;cursor:pointer;transition:all 0.2s;}
-.shop-btn:hover{background:var(--gold);color:var(--black);}
-
-/* ORDER MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center;padding:1rem;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--deep);border:1px solid var(--border);border-radius:6px;padding:2.5rem;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;}
-.modal h2{font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:0.3rem;font-size:1.5rem;}
-.modal-sub{font-size:0.85rem;color:var(--muted);margin-bottom:2rem;}
-.modal-close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;}
-.modal-close:hover{color:var(--gold);}
-.upi-box{background:rgba(212,168,67,0.07);border:1px solid var(--border);border-radius:4px;padding:1.2rem;margin:1.2rem 0;text-align:center;}
-.upi-id{font-family:'Jost',sans-serif;font-size:1.1rem;font-weight:500;color:var(--gold);letter-spacing:0.05em;margin:0.5rem 0;}
-.upi-note{font-size:0.78rem;color:var(--muted);}
-.upi-icon{font-size:1.8rem;margin-bottom:0.3rem;}
-
-/* TESTIMONIALS */
-.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto;}
-.testi-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1.8rem;}
-.stars{color:var(--gold);font-size:0.9rem;margin-bottom:0.75rem;letter-spacing:2px;}
-.testi-card p{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--text);line-height:1.8;font-style:italic;margin-bottom:1rem;}
-.testi-author{font-size:0.78rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
-
-/* CONTACT */
-.contact-section{background:var(--deep);border-top:1px solid var(--border);}
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;max-width:900px;margin:0 auto;}
-.contact-card{text-align:center;}
-.contact-icon{font-size:1.5rem;margin-bottom:0.5rem;}
-.contact-card h4{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;}
-.contact-card p,.contact-card a{font-size:0.88rem;color:var(--muted);line-height:1.8;}
-.contact-card a{color:var(--gold);}
-.contact-card a:hover{color:var(--gold-light);}
-
-/* FOOTER */
-footer{background:var(--black);border-top:1px solid var(--border);text-align:center;padding:2rem;font-size:0.78rem;color:var(--muted);}
+/* ─── FOOTER ─── */
+footer{background:var(--footer-bg);border-top:1px solid var(--card-border);text-align:center;padding:2.5rem 2rem;font-size:0.76rem;color:var(--muted);position:relative;z-index:1;}
 footer span{color:var(--gold);}
 
-/* WHATSAPP FLOAT */
-.wa-float{position:fixed;bottom:24px;right:24px;z-index:999;width:54px;height:54px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 20px rgba(37,211,102,0.4);cursor:pointer;transition:transform 0.2s;}
-.wa-float:hover{transform:scale(1.1);}
+/* ─── WA FLOAT ─── */
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:999;width:56px;height:56px;background:linear-gradient(135deg,#25d366,#128c46);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 25px rgba(37,211,102,0.5);cursor:pointer;transition:all 0.25s;}
+.wa-float:hover{transform:scale(1.12);box-shadow:0 6px 35px rgba(37,211,102,0.65);}
+
+/* ─── RIPPLE ─── */
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.3);transform:scale(0);animation:rippleAnim 0.6s linear;pointer-events:none;}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0;}}
+
+/* ─── REVEAL ANIMATIONS ─── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
 
 @media(max-width:700px){
   nav{padding:0 1.2rem;}
   .nav-links{display:none;}
-  .hero h1{font-size:2rem;}
+  .hero h1{font-size:2.1rem;}
   .form-grid{grid-template-columns:1fr;}
   .about-wrap{flex-direction:column;text-align:center;}
   .about-stats{justify-content:center;}
+  .modal-box{padding:1.8rem 1.4rem;}
+  .about-img-frame{margin:0 auto;}
+}
+
+/* ── AUTO LIGHT MODE via prefers-color-scheme ── */
+@media(prefers-color-scheme:light){
+  :root{
+    --bg:#fdf8ee;--bg-deep:#f5edda;--bg-alt:rgba(245,237,218,0.8);--bg-alt2:rgba(238,228,205,0.9);
+    --glass:rgba(255,255,255,0.72);--glass-border:rgba(160,120,48,0.2);--nav-bg:rgba(253,248,238,0.9);
+    --modal-bg:rgba(253,248,238,0.98);--card-border:rgba(160,120,48,0.22);
+    --text:#3d2e10;--text-heading:#1a1208;--muted:#8a7040;
+    --input-bg:rgba(255,255,255,0.85);--input-border:rgba(160,120,48,0.3);
+    --input-focus-bg:rgba(212,168,67,0.06);--select-option-bg:#fdf8ee;
+    --star-alpha:0.18;--star-color:120,80,10;
+    --why-bg:linear-gradient(to bottom,rgba(245,237,218,0.75),rgba(238,228,205,0.55));
+    --footer-bg:#f0e5cc;--shop-img-bg:linear-gradient(135deg,rgba(240,230,205,0.95),rgba(230,220,190,0.95));
+    --shop-img-overlay:rgba(253,248,238,0.2);--ring-fill:#fdf8ee;--upi-bg:rgba(212,168,67,0.1);
+    --section-alt:rgba(245,237,218,0.7);--section-alt2:rgba(238,228,205,0.8);
+  }
+  .section-alt-bg{background:rgba(245,237,218,0.8);}
+  .section-alt2-bg{background:rgba(238,228,205,0.9);}
+  /* glass cards look cleaner in light */
+  .card,.shop-card,.testi-card,.contact-card,.dis-card,.med-row{
+    box-shadow:0 2px 16px rgba(160,120,48,0.08);
+  }
+  .card:hover{box-shadow:0 8px 40px rgba(160,120,48,0.16),0 0 20px rgba(212,168,67,0.1);}
+  .shop-card:hover{box-shadow:0 12px 40px rgba(160,120,48,0.18),0 0 25px rgba(212,168,67,0.1);}
+  nav{box-shadow:0 2px 20px rgba(160,120,48,0.12);}
 }
 </style>
 </head>
 <body>
 
+<!-- STAR CANVAS -->
+<canvas id="star-canvas"></canvas>
+
+<!-- ZODIAC RING -->
+<svg class="zodiac-ring" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="250" cy="250" r="240" stroke="#d4a843" stroke-width="0.5" stroke-dasharray="4 8"/>
+  <circle cx="250" cy="250" r="200" stroke="#d4a843" stroke-width="0.3"/>
+  <!-- Zodiac symbols around ring -->
+  <g font-family="serif" font-size="13" fill="#d4a843" text-anchor="middle" dominant-baseline="middle">
+    <text x="250" y="18">♈</text><text x="380" y="52">♉</text>
+    <text x="472" y="170">♊</text><text x="480" y="250">♋</text>
+    <text x="472" y="330">♌</text><text x="380" y="448">♍</text>
+    <text x="250" y="482">♎</text><text x="120" y="448">♏</text>
+    <text x="28" y="330">♐</text><text x="20" y="250">♑</text>
+    <text x="28" y="170">♒</text><text x="120" y="52">♓</text>
+  </g>
+</svg>
+
 <!-- NAV -->
 <nav>
   <div class="nav-brand">
-    <img class="nav-logo-img" src="LOGO.jpg" alt="Logo"/>
-    <span class="nav-brand-text">Astro & Homeo Wellness</span>
+    <img class="nav-logo-img" src="LOGO.jpg" onerror="this.style.display='none'" alt="Logo"/>
+    <span class="nav-brand-text">Astro &amp; Homeo Wellness</span>
   </div>
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#services">Services</a>
     <a href="#shop">Shop</a>
     <a href="#medicines">Medicines</a>
-    <a href="#booking">Book</a>
     <a href="#contact">Contact</a>
   </div>
-  <button class="nav-book" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Now</button>
+  <button class="nav-book" onclick="openBookingModal()">Book Now</button>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-lines"></div>
-  <img class="hero-logo" src="LOGO.jpg" alt="Astro Homeo Wellness Logo"/>
+  <div class="hero-glow"></div>
+  <div class="hero-logo-wrap">
+    <div class="hero-logo-ring"></div>
+    <div class="hero-logo-ring2"></div>
+    <img class="hero-logo" src="LOGO.jpg" onerror="this.src='';this.style.cssText='width:118px;height:118px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 60px rgba(212,168,67,0.25);background:linear-gradient(135deg,#1a1a2e,#2d4a2d);display:flex;align-items:center;justify-content:center;'" alt="Astro Homeo Wellness Logo"/>
+  </div>
   <div class="hero-eyebrow">✦ Ancient Wisdom · Modern Healing ✦</div>
   <h1>Where <em>Stars</em> Guide<br>Your Healing</h1>
   <p class="hero-name">Dr. Viraja Kumar</p>
@@ -228,7 +434,7 @@ footer span{color:var(--gold);}
     <span class="hbadge">Chitradurga, Karnataka</span>
   </div>
   <div class="hero-ctas">
-    <button class="btn-primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Consultation</button>
+    <button class="btn-primary" onclick="openBookingModal()">Book Consultation</button>
     <button class="btn-secondary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Visit Our Shop</button>
   </div>
   <div class="hero-contact">
@@ -236,20 +442,22 @@ footer span{color:var(--gold);}
     <a href="tel:+918217610889">+91 82176 10889</a> &nbsp;|&nbsp;
     ✉ <a href="mailto:astro.homeowellness@gmail.com">astro.homeowellness@gmail.com</a>
   </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-dot"></div></div>
 </section>
 
 <!-- ABOUT -->
 <section class="section" id="about">
   <div class="section-inner">
-    <div class="section-eyebrow">About the Healer</div>
-    <div class="divider"></div>
-    <div class="about-wrap">
-     <img class="about-avatar" src="VK.jpg">
+    <div class="section-eyebrow reveal">About the Healer</div>
+    <div class="divider reveal"></div>
+    <div class="about-wrap reveal">
+      <div class="about-img-frame">
+        <img class="about-avatar-img" src="VK.jpg" onerror="this.outerHTML='<div class=\'about-avatar-fallback\'>VK</div>'" alt="Dr. Viraja Kumar"/>
+      </div>
       <div class="about-text">
         <h3>Dr. Viraja Kumar</h3>
-        <p class="about-role">Astrologer & Homeopathic Physician · Chitradurga, Karnataka</p>
+        <p class="about-role">Astrologer &amp; Homeopathic Physician · Chitradurga, Karnataka</p>
         <p>Dr. Viraja Kumar is a pioneering healer with over two decades of mastery in the rare combination of Vedic astrology and classical homeopathy. His unique method reads planetary influences on the body to identify hidden root causes of illness — enabling far more accurate remedies than conventional approaches alone.</p>
-        <br/>
         <p>He has successfully treated thousands of patients with rare and chronic conditions including gangrene, psoriasis, kidney stones, diabetes, and asthma — restoring lasting health through purely natural means. His deep astrological insight also guides patients through life decisions on marriage, career, property, and construction.</p>
         <div class="about-stats">
           <div><div class="stat-num">20+</div><div class="stat-lbl">Years Experience</div></div>
@@ -265,25 +473,25 @@ footer span{color:var(--gold);}
 </section>
 
 <!-- SERVICES -->
-<section class="section" style="background:var(--deep);border-top:1px solid var(--border);" id="services">
+<section class="section" class="section-alt-bg" id="services">
   <div class="section-inner">
-    <div class="section-eyebrow">What We Offer</div>
-    <h2 class="section-title">Our Services</h2>
-    <div class="divider"></div>
-    <div class="tabs-nav">
+    <div class="section-eyebrow reveal">What We Offer</div>
+    <h2 class="section-title reveal">Our Services</h2>
+    <div class="divider reveal"></div>
+    <div class="tabs-nav reveal">
       <button class="tab-btn active" onclick="showTab('astro',this)">🔭 Astrology Services</button>
       <button class="tab-btn" onclick="showTab('homeo',this)">🌿 Homeopathy Treatments</button>
     </div>
     <div class="tab-pane active" id="tab-astro">
       <div class="grid-3">
         <div class="card"><div class="card-icon">🏥</div><h3>Health Issues</h3><p>Planetary afflictions linked to your health — identified through astrology for targeted homeopathic treatment.</p></div>
-        <div class="card"><div class="card-icon">💍</div><h3>Marriage & Relationships</h3><p>Kundali matching, marriage timing, compatibility analysis and resolving relationship challenges.</p></div>
-        <div class="card"><div class="card-icon">🎓</div><h3>Education & Career</h3><p>Right field of study, career path, and timing of opportunities based on your birth chart.</p></div>
-        <div class="card"><div class="card-icon">💰</div><h3>Money & Finance</h3><p>Wealth yoga, financial problems, debt relief and right timing for investments and business.</p></div>
-        <div class="card"><div class="card-icon">🏠</div><h3>House & Property</h3><p>Astrological guidance for buying, selling, or renting — right time, direction and maximum benefit.</p></div>
+        <div class="card"><div class="card-icon">💍</div><h3>Marriage &amp; Relationships</h3><p>Kundali matching, marriage timing, compatibility analysis and resolving relationship challenges.</p></div>
+        <div class="card"><div class="card-icon">🎓</div><h3>Education &amp; Career</h3><p>Right field of study, career path, and timing of opportunities based on your birth chart.</p></div>
+        <div class="card"><div class="card-icon">💰</div><h3>Money &amp; Finance</h3><p>Wealth yoga, financial problems, debt relief and right timing for investments and business.</p></div>
+        <div class="card"><div class="card-icon">🏠</div><h3>House &amp; Property</h3><p>Astrological guidance for buying, selling, or renting — right time, direction and maximum benefit.</p></div>
         <div class="card"><div class="card-icon">🧱</div><h3>Construction Planning</h3><p>Vastu-aligned consultation for homes and commercial buildings — timing, direction and layout.</p></div>
         <div class="card"><div class="card-icon">🌟</div><h3>Horoscope Reading</h3><p>Comprehensive birth chart reading covering all major life areas — past, present and future predictions.</p></div>
-        <div class="card"><div class="card-icon">🔮</div><h3>Gemstone & Remedies</h3><p>Personalised gemstone, mantra and ritual recommendations to strengthen planetary positions.</p></div>
+        <div class="card"><div class="card-icon">🔮</div><h3>Gemstone &amp; Remedies</h3><p>Personalised gemstone, mantra and ritual recommendations to strengthen planetary positions.</p></div>
       </div>
     </div>
     <div class="tab-pane" id="tab-homeo">
@@ -302,14 +510,14 @@ footer span{color:var(--gold);}
 <!-- WHY -->
 <section class="section why-section">
   <div class="section-inner">
-    <div class="section-eyebrow">Why Choose Us</div>
-    <h2 class="section-title">The Astro.Homeo Difference</h2>
-    <div class="divider"></div>
+    <div class="section-eyebrow reveal">Why Choose Us</div>
+    <h2 class="section-title reveal">The Astro·Homeo Difference</h2>
+    <div class="divider reveal"></div>
     <div class="why-grid">
-      <div class="why-item"><div class="why-icon">🎯</div><h4>Root Cause Focus</h4><p>Astrology reveals deeper planetary causes behind physical and emotional ailments.</p></div>
-      <div class="why-item"><div class="why-icon">🌱</div><h4>100% Natural</h4><p>All remedies are gentle, non-toxic and free from side effects — safe for all ages.</p></div>
-      <div class="why-item"><div class="why-icon">🏆</div><h4>Proven Results</h4><p>Over 5,000 patients healed, including those with rare and difficult conditions.</p></div>
-      <div class="why-item"><div class="why-icon">🤝</div><h4>Personalised Care</h4><p>Every consultation and remedy is tailored specifically to the individual.</p></div>
+      <div class="why-item reveal"><span class="why-icon">🎯</span><h4>Root Cause Focus</h4><p>Astrology reveals deeper planetary causes behind physical and emotional ailments.</p></div>
+      <div class="why-item reveal"><span class="why-icon">🌱</span><h4>100% Natural</h4><p>All remedies are gentle, non-toxic and free from side effects — safe for all ages.</p></div>
+      <div class="why-item reveal"><span class="why-icon">🏆</span><h4>Proven Results</h4><p>Over 5,000 patients healed, including those with rare and difficult conditions.</p></div>
+      <div class="why-item reveal"><span class="why-icon">🤝</span><h4>Personalised Care</h4><p>Every consultation and remedy is tailored specifically to the individual.</p></div>
     </div>
   </div>
 </section>
@@ -317,75 +525,45 @@ footer span{color:var(--gold);}
 <!-- SHOP -->
 <section class="section" id="shop">
   <div class="section-inner">
-    <div class="section-eyebrow">Online Store</div>
-    <h2 class="section-title">Shop Medicines & Astro Products</h2>
-    <p class="section-sub">Order authentic homeopathic medicines and astrological items online. Pay via UPI and receive your order with tracking.</p>
-    <div class="divider"></div>
+    <div class="section-eyebrow reveal">Online Store</div>
+    <h2 class="section-title reveal">Shop Medicines &amp; Astro Products</h2>
+    <p class="section-sub reveal">Order authentic homeopathic medicines and astrological items online. Pay via UPI and receive your order with tracking.</p>
+    <div class="divider reveal"></div>
     <div class="shop-grid">
-      <div class="shop-card">
-        <img class="shop-img" src="ARNICA.jpg">
-        <div class="shop-body">
-          <h3>Arnica Montana 30C</h3>
-          <p>For injuries, bruises, muscle soreness and trauma. 30ml bottle.</p>
-          <div class="shop-price">₹ 120</div>
-          <button class="shop-btn" onclick="openOrder('Arnica Montana 30C','₹120')">Order Now</button>
-        </div>
+      <div class="shop-card reveal">
+        <div class="shop-img-wrap"><img src="ARNICA.jpg" onerror="this.outerHTML='<span>🌿</span>'" alt="Arnica"/></div>
+        <div class="shop-body"><h3>Arnica Montana 30C</h3><p>For injuries, bruises, muscle soreness and trauma. 30ml bottle.</p><div class="shop-price">₹ 120</div><button class="shop-btn" onclick="openOrderModal('Arnica Montana 30C','120')"><span>Order Now</span></button></div>
       </div>
-      <div class="shop-card">
-        <div class="shop-img">💊</div>
-        <div class="shop-body">
-          <h3>Sulphur 200C</h3>
-          <p>For chronic skin eruptions, itching and deep constitutional cleansing.</p>
-          <div class="shop-price">₹ 150</div>
-          <button class="shop-btn" onclick="openOrder('Sulphur 200C','₹150')">Order Now</button>
-        </div>
+      <div class="shop-card reveal">
+        <div class="shop-img-wrap"><span>💊</span></div>
+        <div class="shop-body"><h3>Sulphur 200C</h3><p>For chronic skin eruptions, itching and deep constitutional cleansing.</p><div class="shop-price">₹ 150</div><button class="shop-btn" onclick="openOrderModal('Sulphur 200C','150')"><span>Order Now</span></button></div>
       </div>
-      <div class="shop-card">
-        <div class="shop-img">💎</div>
-        <div class="shop-body">
-          <h3>Natural Yellow Sapphire</h3>
-          <p>Energised Pukhraj gemstone for Jupiter — career, wisdom and prosperity.</p>
-          <div class="shop-price">₹ 2,500</div>
-          <button class="shop-btn" onclick="openOrder('Natural Yellow Sapphire','₹2500')">Order Now</button>
-        </div>
+      <div class="shop-card reveal">
+        <div class="shop-img-wrap"><span>💎</span></div>
+        <div class="shop-body"><h3>Natural Yellow Sapphire</h3><p>Energised Pukhraj gemstone for Jupiter — career, wisdom and prosperity.</p><div class="shop-price">₹ 2,500</div><button class="shop-btn" onclick="openOrderModal('Natural Yellow Sapphire','2500')"><span>Order Now</span></button></div>
       </div>
-      <div class="shop-card">
-        <div class="shop-img">🔴</div>
-        <div class="shop-body">
-          <h3>Red Coral (Moonga)</h3>
-          <p>Energised Moonga for Mars energy — strength, vitality and courage.</p>
-          <div class="shop-price">₹ 1,800</div>
-          <button class="shop-btn" onclick="openOrder('Red Coral (Moonga)','₹1800')">Order Now</button>
-        </div>
+      <div class="shop-card reveal">
+        <div class="shop-img-wrap"><span>🔴</span></div>
+        <div class="shop-body"><h3>Red Coral (Moonga)</h3><p>Energised Moonga for Mars energy — strength, vitality and courage.</p><div class="shop-price">₹ 1,800</div><button class="shop-btn" onclick="openOrderModal('Red Coral (Moonga)','1800')"><span>Order Now</span></button></div>
       </div>
-      <div class="shop-card">
-        <div class="shop-img">🕉</div>
-        <div class="shop-body">
-          <h3>Sri Yantra (Brass)</h3>
-          <p>Energised brass Sri Yantra for prosperity, wealth and positive energy.</p>
-          <div class="shop-price">₹ 850</div>
-          <button class="shop-btn" onclick="openOrder('Sri Yantra Brass','₹850')">Order Now</button>
-        </div>
+      <div class="shop-card reveal">
+        <div class="shop-img-wrap"><span>🕉</span></div>
+        <div class="shop-body"><h3>Sri Yantra (Brass)</h3><p>Energised brass Sri Yantra for prosperity, wealth and positive energy.</p><div class="shop-price">₹ 850</div><button class="shop-btn" onclick="openOrderModal('Sri Yantra Brass','850')"><span>Order Now</span></button></div>
       </div>
-      <div class="shop-card">
-        <div class="shop-img">🌙</div>
-        <div class="shop-body">
-          <h3>Homeopathy Starter Kit</h3>
-          <p>10 essential remedies — Arnica, Belladonna, Nux Vomica and more.</p>
-          <div class="shop-price">₹ 650</div>
-          <button class="shop-btn" onclick="openOrder('Homeopathy Starter Kit','₹650')">Order Now</button>
-        </div>
+      <div class="shop-card reveal">
+        <div class="shop-img-wrap"><span>🌙</span></div>
+        <div class="shop-body"><h3>Homeopathy Starter Kit</h3><p>10 essential remedies — Arnica, Belladonna, Nux Vomica and more.</p><div class="shop-price">₹ 650</div><button class="shop-btn" onclick="openOrderModal('Homeopathy Starter Kit','650')"><span>Order Now</span></button></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- MEDICINES & CONDITIONS -->
-<section class="section" style="background:var(--deep);border-top:1px solid var(--border);" id="medicines">
+<!-- MEDICINES -->
+<section class="section" class="section-alt2-bg" id="medicines">
   <div class="section-inner">
-    <div class="section-eyebrow">Reference Guide</div>
-    <h2 class="section-title">Homeopathic Medicine Reference</h2>
-    <div class="divider"></div>
+    <div class="section-eyebrow reveal">Reference Guide</div>
+    <h2 class="section-title reveal">Homeopathic Medicine Reference</h2>
+    <div class="divider reveal"></div>
     <div class="med-grid">
       <div class="med-row"><span class="med-name">Aconite</span><span class="med-use">Sudden fright, anxiety, high fever, shock, early illness</span></div>
       <div class="med-row"><span class="med-name">Arnica Montana</span><span class="med-use">Injuries, bruises, muscle soreness, trauma</span></div>
@@ -403,77 +581,28 @@ footer span{color:var(--gold);}
       <div class="med-row"><span class="med-name">Silicea</span><span class="med-use">Skin issues, hair loss, brittle nails</span></div>
       <div class="med-row"><span class="med-name">Sulphur</span><span class="med-use">Itching, dry skin, chronic skin eruptions</span></div>
     </div>
-    <h3 style="font-family:'Playfair Display',serif;color:var(--white);text-align:center;margin:3rem 0 0.5rem;font-size:1.4rem;">Conditions Treated</h3>
+    <h3 style="font-family:'Playfair Display',serif;color:var(--text-heading);text-align:center;margin:3.5rem 0 0.5rem;font-size:1.5rem;" class="reveal">Conditions Treated</h3>
     <div class="disease-grid">
-      <div class="dis-card"><h4>Digestive</h4><ul><li>Acidity</li><li>Piles</li><li>Constipation</li><li>IBS</li></ul></div>
-      <div class="dis-card"><h4>Respiratory</h4><ul><li>Asthma</li><li>Coughs & Colds</li><li>Bronchitis</li><li>Sinusitis</li></ul></div>
-      <div class="dis-card"><h4>Skin</h4><ul><li>Eczema</li><li>Acne</li><li>Hives</li><li>Psoriasis</li></ul></div>
-      <div class="dis-card"><h4>Musculoskeletal</h4><ul><li>Osteoarthritis</li><li>Back Pain</li><li>Knee Pain</li><li>Joint Stiffness</li></ul></div>
-      <div class="dis-card"><h4>Women's Health</h4><ul><li>PCOS</li><li>Menstrual Issues</li><li>Hormonal Imbalance</li><li>Leucorrhoea</li></ul></div>
-      <div class="dis-card"><h4>Mental Health</h4><ul><li>Anxiety</li><li>OCD</li><li>Stress</li><li>Depression</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<!-- BOOKING -->
-<section class="section booking-section" id="booking">
-  <div class="section-inner">
-    <div class="section-eyebrow">Appointments</div>
-    <h2 class="section-title">Book a Consultation</h2>
-    <p class="section-sub">Your details will be securely recorded and our team will confirm your appointment within 24 hours.</p>
-    <div class="divider"></div>
-    <div class="booking-inner">
-      <div class="form-grid">
-        <div class="fg"><label>Full Name *</label><input type="text" id="b-name" placeholder="Your full name"/></div>
-        <div class="fg"><label>Phone Number *</label><input type="tel" id="b-phone" placeholder="+91 XXXXX XXXXX"/></div>
-        <div class="fg full"><label>Address</label><input type="text" id="b-address" placeholder="Your full address"/></div>
-        <div class="fg"><label>Birth Date *</label><input type="date" id="b-date"/></div>
-        <div class="fg"><label>Birth Time *</label><input type="time" id="b-time"/></div>
-        <div class="fg full">
-          <label>Service Type *</label>
-          <select id="b-service">
-            <option value="">— Select a service —</option>
-            <optgroup label="Astrology Services">
-              <option>Health Issues (Astrology)</option>
-              <option>Marriage & Relationships</option>
-              <option>Education & Career</option>
-              <option>Money & Finance</option>
-              <option>House & Property</option>
-              <option>Construction Planning</option>
-              <option>General Horoscope Reading</option>
-              <option>Gemstone & Remedy Advice</option>
-            </optgroup>
-            <optgroup label="Homeopathy Treatments">
-              <option>Gangrene Treatment</option>
-              <option>Psoriasis Treatment</option>
-              <option>Kidney Stone Treatment</option>
-              <option>Diabetes / Sugar Treatment</option>
-              <option>Asthma Treatment</option>
-              <option>Long-Term / Chronic Disease</option>
-              <option>General Homeopathy Consultation</option>
-            </optgroup>
-            <option>Astro-Homeo Fusion Therapy</option>
-            <option>Online Consultation</option>
-          </select>
-        </div>
-        <div class="fg full"><label>Concern Description</label><textarea id="b-desc" placeholder="Briefly describe your health concern or the reason for your visit..."></textarea></div>
-      </div>
-      <button class="form-submit" onclick="submitBooking()">✦ Confirm Booking Request</button>
-      <div class="success-box" id="book-success">✅ Booking confirmed! Dr. Viraja Kumar's team will contact you on <strong>78925 60643</strong> / <strong>82176 10889</strong> to confirm your appointment timing. A WhatsApp message has been sent with your details.</div>
+      <div class="dis-card reveal"><h4>Digestive</h4><ul><li>Acidity</li><li>Piles</li><li>Constipation</li><li>IBS</li></ul></div>
+      <div class="dis-card reveal"><h4>Respiratory</h4><ul><li>Asthma</li><li>Coughs &amp; Colds</li><li>Bronchitis</li><li>Sinusitis</li></ul></div>
+      <div class="dis-card reveal"><h4>Skin</h4><ul><li>Eczema</li><li>Acne</li><li>Hives</li><li>Psoriasis</li></ul></div>
+      <div class="dis-card reveal"><h4>Musculoskeletal</h4><ul><li>Osteoarthritis</li><li>Back Pain</li><li>Knee Pain</li><li>Joint Stiffness</li></ul></div>
+      <div class="dis-card reveal"><h4>Women's Health</h4><ul><li>PCOS</li><li>Menstrual Issues</li><li>Hormonal Imbalance</li><li>Leucorrhoea</li></ul></div>
+      <div class="dis-card reveal"><h4>Mental Health</h4><ul><li>Anxiety</li><li>OCD</li><li>Stress</li><li>Depression</li></ul></div>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="section" style="background:var(--black);">
+<section class="section">
   <div class="section-inner">
-    <div class="section-eyebrow">Patient Stories</div>
-    <h2 class="section-title">What Our Patients Say</h2>
-    <div class="divider"></div>
+    <div class="section-eyebrow reveal">Patient Stories</div>
+    <h2 class="section-title reveal">What Our Patients Say</h2>
+    <div class="divider reveal"></div>
     <div class="testi-grid">
-      <div class="testi-card"><div class="stars">★★★★★</div><p>"After years of failed treatments, Dr. Viraja Kumar identified the planetary cause of my chronic condition and gave me a remedy that worked within weeks. Truly miraculous."</p><div class="testi-author">— Priya M., Bengaluru</div></div>
-      <div class="testi-card"><div class="stars">★★★★★</div><p>"I came with a rare skin disorder no doctor could explain. Dr. Kumar's astro-homeo approach gave me clarity and a complete cure. I am forever grateful."</p><div class="testi-author">— Rajan S., Chennai</div></div>
-      <div class="testi-card"><div class="stars">★★★★★</div><p>"His guidance on our house construction and my husband's kidney stones — both solved through his expertise. We trust him completely for our family."</p><div class="testi-author">— Anita K., Chitradurga</div></div>
+      <div class="testi-card reveal"><div class="stars">★★★★★</div><p>"After years of failed treatments, Dr. Viraja Kumar identified the planetary cause of my chronic condition and gave me a remedy that worked within weeks. Truly miraculous."</p><div class="testi-author">— Priya M., Bengaluru</div></div>
+      <div class="testi-card reveal"><div class="stars">★★★★★</div><p>"I came with a rare skin disorder no doctor could explain. Dr. Kumar's astro-homeo approach gave me clarity and a complete cure. I am forever grateful."</p><div class="testi-author">— Rajan S., Chennai</div></div>
+      <div class="testi-card reveal"><div class="stars">★★★★★</div><p>"His guidance on our house construction and my husband's kidney stones — both solved through his expertise. We trust him completely for our family."</p><div class="testi-author">— Anita K., Chitradurga</div></div>
     </div>
   </div>
 </section>
@@ -481,136 +610,289 @@ footer span{color:var(--gold);}
 <!-- CONTACT -->
 <section class="section contact-section" id="contact">
   <div class="section-inner">
-    <div class="section-eyebrow">Get in Touch</div>
-    <h2 class="section-title">Contact Dr. Viraja Kumar</h2>
-    <div class="divider"></div>
+    <div class="section-eyebrow reveal">Get in Touch</div>
+    <h2 class="section-title reveal">Contact Dr. Viraja Kumar</h2>
+    <div class="divider reveal"></div>
     <div class="contact-grid">
-      <div class="contact-card"><div class="contact-icon">📍</div><h4>Address</h4><p>Chitradurga (DT & TQ)<br>Karnataka – 577502</p></div>
-      <div class="contact-card"><div class="contact-icon">📞</div><h4>Phone</h4><p><a href="tel:+917892560643">+91 78925 60643</a><br><a href="tel:+918217610889">+91 82176 10889</a></p></div>
-      <div class="contact-card"><div class="contact-icon">📧</div><h4>Email</h4><p><a href="mailto:astro.homeowellness@gmail.com">astro.homeowellness@gmail.com</a></p></div>
-      <div class="contact-card"><div class="contact-icon">🕐</div><h4>Clinic Hours</h4><p>Mon – Sat: 9 AM – 7 PM<br>Sunday: By Appointment</p></div>
-      <div class="contact-card"><div class="contact-icon">💳</div><h4>UPI Payment</h4><p>8217610889-3@ibl</p></div>
+      <div class="contact-card reveal"><span class="contact-icon">📍</span><h4>Address</h4><p>Chitradurga (DT &amp; TQ)<br>Karnataka – 577502</p></div>
+      <div class="contact-card reveal"><span class="contact-icon">📞</span><h4>Phone</h4><p><a href="tel:+917892560643">+91 78925 60643</a><br><a href="tel:+918217610889">+91 82176 10889</a></p></div>
+      <div class="contact-card reveal"><span class="contact-icon">📧</span><h4>Email</h4><p><a href="mailto:astro.homeowellness@gmail.com">astro.homeowellness@gmail.com</a></p></div>
+      <div class="contact-card reveal"><span class="contact-icon">🕐</span><h4>Clinic Hours</h4><p>Mon – Sat: 9 AM – 7 PM<br>Sunday: By Appointment</p></div>
+      <div class="contact-card reveal"><span class="contact-icon">💳</span><h4>UPI Payment</h4><p>8217610889-3@ibl</p></div>
+    </div>
+    <div style="text-align:center;margin-top:3rem;" class="reveal">
+      <button class="btn-primary" onclick="openBookingModal()">✦ Book a Consultation</button>
     </div>
   </div>
 </section>
 
 <footer>
-  <p>© 2026 <span>Astro & Homeo Wellness</span> · Dr. Viraja Kumar · Chitradurga, Karnataka · Managed by <span>Mr. Manmohan K (Aveer)</span></p>
+  <p>© 2026 <span>Astro &amp; Homeo Wellness</span> · Dr. Viraja Kumar · Chitradurga, Karnataka · Managed by <span>Mr. Manmohan K (Aveer)</span></p>
 </footer>
 
-<!-- WHATSAPP FLOAT -->
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="themeToggle" title="Toggle theme" onclick="toggleTheme()">
+  <span class="theme-toggle-icon" id="themeIcon">☀</span>
+  <span class="theme-toggle-txt" id="themeLabel">Light</span>
+</button>
+
+<!-- WA FLOAT -->
 <a class="wa-float" href="https://wa.me/917892560643" target="_blank" title="WhatsApp Us">💬</a>
 
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BOOKING MODAL -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal-backdrop" onclick="closeBookingModal()"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeBookingModal()">✕</button>
+    <div class="modal-eyebrow">✦ Schedule Your Session</div>
+    <h2>Book a Consultation</h2>
+    <div class="modal-divider"></div>
+    <p class="modal-sub">Your details will be securely recorded. Dr. Viraja Kumar's team will confirm your appointment within 24 hours.</p>
+    <div class="form-grid">
+      <div class="fg"><label>Full Name *</label><input type="text" id="b-name" placeholder="Your full name"/></div>
+      <div class="fg"><label>Phone Number *</label><input type="tel" id="b-phone" placeholder="+91 XXXXX XXXXX"/></div>
+      <div class="fg full"><label>Address</label><input type="text" id="b-address" placeholder="Your full address"/></div>
+      <div class="fg"><label>Birth Date *</label><input type="date" id="b-date"/></div>
+      <div class="fg"><label>Birth Time *</label><input type="time" id="b-time"/></div>
+      <div class="fg full">
+        <label>Service Type *</label>
+        <select id="b-service">
+          <option value="">— Select a service —</option>
+          <optgroup label="Astrology Services">
+            <option>Health Issues (Astrology)</option>
+            <option>Marriage &amp; Relationships</option>
+            <option>Education &amp; Career</option>
+            <option>Money &amp; Finance</option>
+            <option>House &amp; Property</option>
+            <option>Construction Planning</option>
+            <option>General Horoscope Reading</option>
+            <option>Gemstone &amp; Remedy Advice</option>
+          </optgroup>
+          <optgroup label="Homeopathy Treatments">
+            <option>Gangrene Treatment</option>
+            <option>Psoriasis Treatment</option>
+            <option>Kidney Stone Treatment</option>
+            <option>Diabetes / Sugar Treatment</option>
+            <option>Asthma Treatment</option>
+            <option>Long-Term / Chronic Disease</option>
+            <option>General Homeopathy Consultation</option>
+          </optgroup>
+          <option>Astro-Homeo Fusion Therapy</option>
+          <option>Online Consultation</option>
+        </select>
+      </div>
+      <div class="fg full"><label>Concern Description</label><textarea id="b-desc" placeholder="Briefly describe your health concern or the reason for your visit..."></textarea></div>
+    </div>
+    <button class="form-submit" onclick="submitBooking()">✦ Confirm Booking Request</button>
+    <div class="success-box" id="book-success">✅ Booking confirmed! Dr. Viraja Kumar's team will contact you on <strong>78925 60643</strong> / <strong>82176 10889</strong> to confirm your appointment. A WhatsApp message has been sent with your details.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
 <!-- ORDER MODAL -->
-<div class="modal-overlay" id="orderModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeOrder()">✕</button>
+<!-- ═══════════════════════════════════════════════ -->
+<div class="order-overlay" id="orderModal">
+  <div class="modal-backdrop" onclick="closeOrderModal()"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    <div class="modal-eyebrow">✦ Secure Purchase</div>
     <h2>Place Order</h2>
+    <div class="modal-divider"></div>
     <p class="modal-sub" id="order-item-label">Item: —</p>
     <div class="form-grid">
       <div class="fg"><label>Your Name *</label><input type="text" id="o-name" placeholder="Full name"/></div>
       <div class="fg"><label>WhatsApp Number *</label><input type="tel" id="o-phone" placeholder="+91 XXXXX XXXXX"/></div>
-      <div class="fg full"><label>Delivery Address *</label><textarea id="o-address" style="min-height:70px" placeholder="Full delivery address with pincode"></textarea></div>
+      <div class="fg full"><label>Delivery Address *</label><textarea id="o-address" style="min-height:75px" placeholder="Full delivery address with pincode"></textarea></div>
       <div class="fg"><label>Quantity</label><input type="number" id="o-qty" min="1" value="1"/></div>
       <div class="fg"><label>Amount (₹) *</label><input type="text" id="o-amount" placeholder="Enter amount"/></div>
     </div>
     <div class="upi-box">
-      <div class="upi-icon">💳</div>
-      <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;">Pay via UPI</div>
+      <div style="font-size:1.8rem;margin-bottom:0.3rem;">💳</div>
+      <div style="font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;">Pay via UPI</div>
       <div class="upi-id">8217610889-3@ibl</div>
-      <div class="upi-note">Pay the exact amount above to this UPI ID, then enter your UTR/Transaction ID below.</div>
+      <div class="upi-note">Pay the exact amount to this UPI ID, then enter your UTR / Transaction ID below.</div>
     </div>
     <div class="fg" style="margin-bottom:1rem;"><label>UTR / Transaction ID *</label><input type="text" id="o-utr" placeholder="Enter payment transaction ID"/></div>
     <button class="form-submit" onclick="submitOrder()">✦ Confirm Order</button>
-    <div class="success-box" id="order-success">✅ Order placed! You will receive delivery date and tracking number on your WhatsApp number within 24 hours.</div>
+    <div class="success-box" id="order-success">✅ Order placed! Delivery date and tracking number will be sent to your WhatsApp within 24 hours.</div>
   </div>
 </div>
 
 <script>
-var currentOrderItem = '';
-var currentOrderPrice = '';
+/* ─── STAR CANVAS ─── */
+(function(){
+  var c=document.getElementById('star-canvas'),ctx=c.getContext('2d');
+  var stars=[];
+  function getStarAlpha(){return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--star-alpha')||0.7);}
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  for(var i=0;i<220;i++){
+    stars.push({
+      x:Math.random()*c.width,y:Math.random()*c.height,
+      r:Math.random()*1.2+0.2,
+      alpha:Math.random()*0.6+0.15,
+      speed:Math.random()*0.4+0.05,
+      twinkle:Math.random()*Math.PI*2,
+      twinkleSpeed:Math.random()*0.015+0.005
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(function(s){
+      s.twinkle+=s.twinkleSpeed;
+      var a=s.alpha*(0.6+0.4*Math.sin(s.twinkle));
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      var sa=getStarAlpha();
+      var sc=getComputedStyle(document.documentElement).getPropertyValue('--star-color').trim()||'253,248,238';
+      ctx.fillStyle='rgba('+sc+','+(a*sa)+')';
+      ctx.fill();
+      /* Occasional gold star */
+      if(s.r>1){
+        ctx.beginPath();
+        ctx.arc(s.x,s.y,s.r*1.5,0,Math.PI*2);
+        ctx.fillStyle='rgba(212,168,67,'+(a*sa*0.25)+')';
+        ctx.fill();
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 
-function showTab(id, btn) {
+/* ─── RIPPLE EFFECT ─── */
+document.addEventListener('click',function(e){
+  var target=e.target.closest('button,.shop-btn,.btn-primary,.btn-secondary');
+  if(!target)return;
+  var r=document.createElement('span');
+  r.className='ripple';
+  var rect=target.getBoundingClientRect();
+  var size=Math.max(rect.width,rect.height)*2;
+  r.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(e.clientX-rect.left-size/2)+'px;top:'+(e.clientY-rect.top-size/2)+'px;';
+  target.style.position='relative';
+  target.style.overflow='hidden';
+  target.appendChild(r);
+  setTimeout(function(){r.remove();},600);
+});
+
+/* ─── SCROLL REVEAL ─── */
+var observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(function(el){observer.observe(el);});
+
+/* ─── TABS ─── */
+function showTab(id,btn){
   document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
 }
 
-function openOrder(item, price) {
-  currentOrderItem = item;
-  currentOrderPrice = price;
-  document.getElementById('order-item-label').textContent = 'Item: ' + item + ' — ' + price;
-  document.getElementById('o-amount').value = price.replace('₹','').replace(',','');
+/* ─── BOOKING MODAL ─── */
+function openBookingModal(){
+  document.getElementById('bookingModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('book-success').style.display='none';
+}
+function closeBookingModal(){
+  document.getElementById('bookingModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ─── ORDER MODAL ─── */
+var _orderItem='',_orderPrice='';
+function openOrderModal(item,price){
+  _orderItem=item; _orderPrice=price;
+  document.getElementById('order-item-label').textContent='Item: '+item+' — ₹'+parseInt(price).toLocaleString('en-IN');
+  document.getElementById('o-amount').value=price;
   document.getElementById('orderModal').classList.add('open');
+  document.body.style.overflow='hidden';
   document.getElementById('order-success').style.display='none';
 }
-
-function closeOrder() {
+function closeOrderModal(){
   document.getElementById('orderModal').classList.remove('open');
+  document.body.style.overflow='';
 }
 
-function submitBooking() {
-  var name = document.getElementById('b-name').value.trim();
-  var phone = document.getElementById('b-phone').value.trim();
-  var date = document.getElementById('b-date').value;
-  var time = document.getElementById('b-time').value;
-  var service = document.getElementById('b-service').value;
-  if (!name || !phone || !date || !time || !service) {
-    alert('Please fill in all required fields.'); return;
-  }
-  var address = document.getElementById('b-address').value.trim();
-  var desc = document.getElementById('b-desc').value.trim();
-
-  // Save to Excel
-  var wb = XLSX.utils.book_new();
-  var ws_data = [
+/* ─── SUBMIT BOOKING ─── */
+function submitBooking(){
+  var name=document.getElementById('b-name').value.trim();
+  var phone=document.getElementById('b-phone').value.trim();
+  var date=document.getElementById('b-date').value;
+  var time=document.getElementById('b-time').value;
+  var service=document.getElementById('b-service').value;
+  if(!name||!phone||!date||!time||!service){alert('Please fill in all required fields.');return;}
+  var address=document.getElementById('b-address').value.trim();
+  var desc=document.getElementById('b-desc').value.trim();
+  var wb=XLSX.utils.book_new();
+  var ws=XLSX.utils.aoa_to_sheet([
     ['Name','Phone','Address','Date','Time','Service','Description','Submitted At'],
-    [name, phone, address, date, time, service, desc, new Date().toLocaleString()]
-  ];
-  var ws = XLSX.utils.aoa_to_sheet(ws_data);
-  XLSX.utils.book_append_sheet(wb, ws, 'Bookings');
-  XLSX.writeFile(wb, 'booking_'+name.replace(/\s/g,'_')+'_'+date+'.xlsx');
-
-  // Open WhatsApp
-  var msg = '🌟 *New Booking — Astro & Homeo Wellness*\n\n👤 Name: '+name+'\n📞 Phone: '+phone+'\n📍 Address: '+(address||'—')+'\n📅 Date: '+date+'\n⏰ Time: '+time+'\n💼 Service: '+service+'\n📝 Concern: '+(desc||'—')+'\n\n_Submitted: '+new Date().toLocaleString()+'_';
-  window.open('https://wa.me/917892560643?text='+encodeURIComponent(msg), '_blank');
-
+    [name,phone,address,date,time,service,desc,new Date().toLocaleString()]
+  ]);
+  XLSX.utils.book_append_sheet(wb,ws,'Bookings');
+  XLSX.writeFile(wb,'booking_'+name.replace(/\s/g,'_')+'_'+date+'.xlsx');
+  var msg='🌟 *New Booking — Astro & Homeo Wellness*\n\n👤 Name: '+name+'\n📞 Phone: '+phone+'\n📍 Address: '+(address||'—')+'\n📅 Date: '+date+'\n⏰ Time: '+time+'\n💼 Service: '+service+'\n📝 Concern: '+(desc||'—')+'\n\n_Submitted: '+new Date().toLocaleString()+'_';
+  window.open('https://wa.me/917892560643?text='+encodeURIComponent(msg),'_blank');
   document.getElementById('book-success').style.display='block';
   ['b-name','b-phone','b-address','b-date','b-time','b-service','b-desc'].forEach(function(id){document.getElementById(id).value='';});
 }
 
-function submitOrder() {
-  var name = document.getElementById('o-name').value.trim();
-  var phone = document.getElementById('o-phone').value.trim();
-  var address = document.getElementById('o-address').value.trim();
-  var qty = document.getElementById('o-qty').value;
-  var amount = document.getElementById('o-amount').value.trim();
-  var utr = document.getElementById('o-utr').value.trim();
-  if (!name || !phone || !address || !amount || !utr) {
-    alert('Please fill in all required fields including UTR/Transaction ID.'); return;
-  }
-
-  // Save to Excel
-  var wb = XLSX.utils.book_new();
-  var ws_data = [
+/* ─── SUBMIT ORDER ─── */
+function submitOrder(){
+  var name=document.getElementById('o-name').value.trim();
+  var phone=document.getElementById('o-phone').value.trim();
+  var address=document.getElementById('o-address').value.trim();
+  var qty=document.getElementById('o-qty').value;
+  var amount=document.getElementById('o-amount').value.trim();
+  var utr=document.getElementById('o-utr').value.trim();
+  if(!name||!phone||!address||!amount||!utr){alert('Please fill in all required fields including UTR/Transaction ID.');return;}
+  var wb=XLSX.utils.book_new();
+  var ws=XLSX.utils.aoa_to_sheet([
     ['Name','WhatsApp','Address','Item','Quantity','Amount','UTR/Transaction ID','Submitted At'],
-    [name, phone, address, currentOrderItem, qty, '₹'+amount, utr, new Date().toLocaleString()]
-  ];
-  var ws = XLSX.utils.aoa_to_sheet(ws_data);
-  XLSX.utils.book_append_sheet(wb, ws, 'Orders');
-  XLSX.writeFile(wb, 'order_'+name.replace(/\s/g,'_')+'.xlsx');
-
-  // Open WhatsApp
-  var msg = '🛒 *New Shop Order — Astro & Homeo Wellness*\n\n👤 Name: '+name+'\n📱 WhatsApp: '+phone+'\n📍 Address: '+address+'\n📦 Item: '+currentOrderItem+'\n🔢 Qty: '+qty+'\n💰 Amount Paid: ₹'+amount+'\n🧾 UTR/TXN ID: '+utr+'\n\n_Order Time: '+new Date().toLocaleString()+'_';
-  window.open('https://wa.me/917892560643?text='+encodeURIComponent(msg), '_blank');
-
+    [name,phone,address,_orderItem,qty,'₹'+amount,utr,new Date().toLocaleString()]
+  ]);
+  XLSX.utils.book_append_sheet(wb,ws,'Orders');
+  XLSX.writeFile(wb,'order_'+name.replace(/\s/g,'_')+'.xlsx');
+  var msg='🛒 *New Shop Order — Astro & Homeo Wellness*\n\n👤 Name: '+name+'\n📱 WhatsApp: '+phone+'\n📍 Address: '+address+'\n📦 Item: '+_orderItem+'\n🔢 Qty: '+qty+'\n💰 Amount Paid: ₹'+amount+'\n🧾 UTR/TXN ID: '+utr+'\n\n_Order Time: '+new Date().toLocaleString()+'_';
+  window.open('https://wa.me/917892560643?text='+encodeURIComponent(msg),'_blank');
   document.getElementById('order-success').style.display='block';
 }
 
-// Close modal on overlay click
-document.getElementById('orderModal').addEventListener('click', function(e){
-  if(e.target === this) closeOrder();
+
+/* ─── THEME TOGGLE ─── */
+var _theme='auto'; // auto | light | dark
+function _applyTheme(t){
+  var icon=document.getElementById('themeIcon');
+  var lbl=document.getElementById('themeLabel');
+  document.body.classList.remove('force-light','force-dark');
+  if(t==='light'){document.body.classList.add('force-light');if(icon)icon.textContent='☾';if(lbl)lbl.textContent='Dark';}
+  else if(t==='dark'){document.body.classList.add('force-dark');if(icon)icon.textContent='☀';if(lbl)lbl.textContent='Light';}
+  else{
+    var dark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+    if(icon)icon.textContent=dark?'☀':'☾';
+    if(lbl)lbl.textContent=dark?'Light':'Dark';
+  }
+  try{localStorage.setItem('ahw-theme',t);}catch(e){}
+}
+function toggleTheme(){
+  if(_theme==='auto'){var dark=window.matchMedia('(prefers-color-scheme:dark)').matches;_theme=dark?'light':'dark';}
+  else if(_theme==='dark'){_theme='light';}
+  else{_theme='dark';}
+  _applyTheme(_theme);
+}
+(function(){
+  try{var s=localStorage.getItem('ahw-theme');if(s)_theme=s;}catch(e){}
+  _applyTheme(_theme);
+  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(_theme==='auto')_applyTheme('auto');});
+})();
+
+/* ─── ESC TO CLOSE ─── */
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeBookingModal();closeOrderModal();}
 });
 </script>
 </body>
